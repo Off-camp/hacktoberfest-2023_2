@@ -1,0 +1,48 @@
+Given an integer N denoting the Length of a line segment. You need to cut the line segment in such a way that the cut length of a line segment each time is either x , y or z. Here x, y, and z are integers.
+After performing all the cut operations, your total number of cut segments must be maximum.
+
+Note: if no segment can be cut then return 0.
+
+Example 1:
+
+Input:
+N = 4
+x = 2, y = 1, z = 1
+Output: 4
+Explanation:Total length is 4, and the cut
+lengths are 2, 1 and 1.  We can make
+maximum 4 segments each of length 1.
+
+
+
+def maximizeCuts(N, x, y, z):
+    # Create a DP array to store the maximum number of cut segments for each length from 0 to N
+    dp = [0] * (N + 1)
+    
+    # Base case: If the length is 0, no cuts are needed
+    dp[0] = 0
+    
+    for i in range(1, N + 1):
+        # Initialize dp[i] to -1, indicating it's not possible to cut the segment
+        dp[i] = -1
+
+        # Check if a cut of length x is possible
+        if i >= x and dp[i - x] != -1:
+            dp[i] = max(dp[i], dp[i - x] + 1)
+
+        # Check if a cut of length y is possible
+        if i >= y and dp[i - y] != -1:
+            dp[i] = max(dp[i], dp[i - y] + 1)
+
+        # Check if a cut of length z is possible
+        if i >= z and dp[i - z] != -1:
+            dp[i] = max(dp[i], dp[i - z] + 1)
+
+    # If dp[N] is still -1, it means it's not possible to cut the segment
+    return max(0, dp[N])
+
+# Example usage
+N = 4
+x, y, z = 2, 1, 1
+result = maximizeCuts(N, x, y, z)
+print(result)  # Output: 4
